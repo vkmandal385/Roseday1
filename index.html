@@ -1,51 +1,191 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Happy Rose Day Bubu ❤️</title>
+<meta charset="UTF-8">
+<title>For My Bubu ❤️</title>
+
 <style>
-body {
+body{
   margin:0;
-  background:pink;
-  text-align:center;
-  font-family:Arial;
+  font-family: 'Segoe UI', sans-serif;
+  overflow:hidden;
+  background: linear-gradient(135deg,#ff758c,#ff7eb3);
   color:white;
-  padding-top:80px;
+  text-align:center;
 }
-button{
-  padding:10px 20px;
-  font-size:18px;
-  border:none;
-  border-radius:10px;
+
+/* Glass Effect */
+.glass{
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(15px);
+  border-radius:20px;
+  padding:30px;
+  width:85%;
+  margin:auto;
+  margin-top:80px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
-#msg{
+
+.page{
   display:none;
+  height:100vh;
+  animation:fade 1s ease-in-out;
+}
+
+.active{ display:block; }
+
+h1{ font-size:30px; }
+p{ font-size:18px; line-height:1.6; }
+
+button{
+  padding:10px 25px;
+  font-size:16px;
+  border:none;
+  border-radius:25px;
+  background:white;
+  color:#ff4b8e;
+  cursor:pointer;
   margin-top:20px;
-  font-size:22px;
+}
+
+input{
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  text-align:center;
+  font-size:16px;
+}
+
+img{
+  width:200px;
+  border-radius:20px;
+  margin:10px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+@keyframes fade{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+/* Falling Roses */
+.rose{
+  position:fixed;
+  top:-10px;
+  font-size:20px;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{ transform: translateY(100vh); }
 }
 </style>
 </head>
 
 <body>
 
-<h1>🌹 Happy Rose Day Bubu ❤️</h1>
+<!-- PASSWORD PAGE -->
+<div class="page active" id="page1">
+  <div class="glass">
+    <h1>Enter Secret Password 💖</h1>
+    <input type="password" id="pass" placeholder="Password">
+    <br>
+    <button onclick="checkPass()">Unlock 🔐</button>
+    <p id="wrong" style="color:#fff;"></p>
+  </div>
+</div>
 
-<p>
-Bubu tum meri sabse pyaari muskaan ho 💖<br>
-Har din tumhare naam 🌹
-</p>
+<!-- COUNTDOWN PAGE -->
+<div class="page" id="page2">
+  <div class="glass">
+    <h1>Countdown For Special Moment ⏳</h1>
+    <h2 id="countdown"></h2>
+    <button onclick="nextPage()">Start Surprise 🌹</button>
+  </div>
+</div>
 
-<button onclick="show()">Click Surprise 💌</button>
+<!-- SHAYARI 1 -->
+<div class="page" id="page3">
+  <div class="glass">
+    <h1>Happy Rose Day Bubu 🌹</h1>
+    <p>Tum gulab se bhi zyada haseen ho,<br>
+    Tumhari muskaan meri sabse badi taqdeer ho ❤️</p>
+    <button onclick="nextPage()">Next ➜</button>
+  </div>
+</div>
 
-<div id="msg">
-I Love You So Much ❤️<br>
-Forever Yours,<br>
-Your Dudu 💞
+<!-- SHAYARI 2 -->
+<div class="page" id="page4">
+  <div class="glass">
+    <p>Har subah tumse shuru ho,<br>
+    Har raat tumpe khatam ho 💕</p>
+    <button onclick="nextPage()">Next ➜</button>
+  </div>
+</div>
+
+<!-- IMAGES PAGE -->
+<div class="page" id="page5">
+  <div class="glass">
+    <h1>Bubu ❤️ Dudu</h1>
+    <img src="bubu.jpg">
+    <img src="dudu.jpg">
+    <button onclick="nextPage()">Final Surprise 💌</button>
+  </div>
+</div>
+
+<!-- FINAL PAGE -->
+<div class="page" id="page6">
+  <div class="glass">
+    <h1>I Love You So Much ❤️</h1>
+    <p>Forever Yours,<br>Your Dudu 💖</p>
+    <audio autoplay controls loop>
+      <source src="song.mp3" type="audio/mpeg">
+    </audio>
+  </div>
 </div>
 
 <script>
-function show(){
-document.getElementById("msg").style.display="block";
+let current=1;
+
+function nextPage(){
+  document.getElementById("page"+current).classList.remove("active");
+  current++;
+  document.getElementById("page"+current).classList.add("active");
 }
+
+function checkPass(){
+  let p=document.getElementById("pass").value;
+  if(p==="bubulovedudu"){
+    nextPage();
+    startCountdown();
+  }else{
+    document.getElementById("wrong").innerText="Wrong Password 😢";
+  }
+}
+
+/* Countdown */
+function startCountdown(){
+  let count=10;
+  let x=setInterval(function(){
+    document.getElementById("countdown").innerText=count+" seconds";
+    count--;
+    if(count<0){
+      clearInterval(x);
+      document.getElementById("countdown").innerText="Time's Up ❤️";
+    }
+  },1000);
+}
+
+/* Falling Roses */
+function createRose(){
+  const rose=document.createElement("div");
+  rose.classList.add("rose");
+  rose.innerHTML="🌹";
+  rose.style.left=Math.random()*100+"vw";
+  rose.style.animationDuration=(3+Math.random()*5)+"s";
+  document.body.appendChild(rose);
+  setTimeout(()=>rose.remove(),8000);
+}
+setInterval(createRose,300);
 </script>
 
 </body>
